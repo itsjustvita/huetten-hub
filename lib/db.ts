@@ -1,4 +1,4 @@
-import mysql from 'mysql2/promise';
+import mysql from "mysql2/promise";
 
 export async function query(sql: string, params: any[]) {
   const connection = await mysql.createConnection({

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Navigation } from './Navigation';
+import { Navigation } from "./Navigation";
 
 interface NavigationWrapperProps {
   user: {
@@ -11,11 +11,23 @@ interface NavigationWrapperProps {
 }
 
 export function NavigationWrapper({ user }: NavigationWrapperProps) {
-  const handleLogout = () => {
-    // Implementieren Sie hier Ihre Logout-Logik
-    console.log('Logout');
-    // Beispiel:
-    // router.push('/logout');
+  if (!user) {
+    console.error("User data is missing in NavigationWrapper");
+    return null;
+  }
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", { method: "POST" });
+      if (response.ok) {
+        console.log("Erfolgreich abgemeldet");
+        window.location.href = "/login";
+      } else {
+        console.error("Fehler beim Abmelden");
+      }
+    } catch (error) {
+      console.error("Fehler beim Abmelden:", error);
+    }
   };
 
   return <Navigation user={user} onLogout={handleLogout} />;
