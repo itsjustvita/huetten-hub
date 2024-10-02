@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -17,10 +18,12 @@ import {
 export function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
@@ -38,6 +41,8 @@ export function LoginForm() {
     } catch (error) {
       console.error('Login error:', error);
       alert('An error occurred during login');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,8 +71,15 @@ export function LoginForm() {
           </div>
         </div>
         <div className="mt-6">
-          <Button type="submit" className="w-full">
-            Anmelden
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Wird angemeldet...
+              </>
+            ) : (
+              'Anmelden'
+            )}
           </Button>
         </div>
       </form>

@@ -1,5 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
+import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 // Definieren Sie einen Typ für den Benutzer
@@ -15,6 +16,7 @@ export default async function RootLayout({
         <main>
           <div className="w-full">{children}</div>
         </main>
+        <Toaster />
       </body>
     </html>
   );

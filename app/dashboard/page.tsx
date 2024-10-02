@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MonthCalendar } from '@/components/MonthCalendar';
 import { NavigationWrapper } from '@/components/NavigationWrapper';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const months = [
   'Januar',
@@ -28,7 +30,7 @@ interface User {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const currentYear = new Date().getFullYear();
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -57,6 +59,14 @@ export default function DashboardPage() {
     checkUser();
   }, [router]);
 
+  const handlePreviousYear = () => {
+    setCurrentYear((prevYear) => prevYear - 1);
+  };
+
+  const handleNextYear = () => {
+    setCurrentYear((prevYear) => prevYear + 1);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -73,18 +83,36 @@ export default function DashboardPage() {
           isAdmin: user.isAdmin || false,
         }}
       />
-      <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 to-indigo-900">
-        <div className="container mx-auto p-4">
+      <div className="w-full min-h-screen relative">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/1.jpg')" }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-green-900/70 to-green-900/70"></div>
+        <div className="relative container mx-auto p-4">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-white">
-              Jahresübersicht {currentYear}
-            </h1>
+            <h1 className="text-3xl font-bold text-white">Jahresübersicht</h1>
+            <div className="flex items-center space-x-4">
+              <Button
+                onClick={handlePreviousYear}
+                className="bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm text-white hover:bg-white hover:bg-opacity-50"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <span className="text-2xl font-bold text-white">{currentYear}</span>
+              <Button
+                onClick={handleNextYear}
+                className="bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm text-white hover:bg-white hover:bg-opacity-50"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {months.map((month, index) => (
               <div
                 key={index}
-                className="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg p-6"
+                className="w-full bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-lg shadow-lg p-6"
               >
                 <div className="rounded-md p-4">
                   <MonthCalendar year={currentYear} month={index + 1} />
