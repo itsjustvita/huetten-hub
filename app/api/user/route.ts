@@ -1,13 +1,13 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import * as jose from 'jose';
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import * as jose from "jose";
 
 export async function GET() {
   const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value;
+  const token = cookieStore.get("token")?.value;
 
   if (!token) {
-    return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
   }
 
   try {
@@ -15,12 +15,12 @@ export async function GET() {
     const { payload } = await jose.jwtVerify(token, secret);
 
     return NextResponse.json({
-      userId: payload.sub,
+      userId: payload.userId,
       username: payload.username,
-      isAdmin: payload.isAdmin || false,
+      isAdmin: Boolean(payload.isAdmin),
     });
   } catch (error) {
-    console.error('Error verifying token:', error);
-    return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+    console.error("Error verifying token:", error);
+    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
   }
 }
