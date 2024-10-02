@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Navigation } from "./Navigation";
+import { Navigation } from './Navigation';
 
 interface NavigationWrapperProps {
   user: {
@@ -11,22 +11,17 @@ interface NavigationWrapperProps {
 }
 
 export function NavigationWrapper({ user }: NavigationWrapperProps) {
-  if (!user) {
-    console.error("User data is missing in NavigationWrapper");
-    return null;
-  }
-
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/logout", { method: "POST" });
+      const response = await fetch('/api/logout', { method: 'POST' });
       if (response.ok) {
-        console.log("Erfolgreich abgemeldet");
-        window.location.href = "/login";
+        console.log('Erfolgreich abgemeldet');
+        window.location.href = '/login';
       } else {
-        console.error("Fehler beim Abmelden");
+        console.error('Fehler beim Abmelden');
       }
     } catch (error) {
-      console.error("Fehler beim Abmelden:", error);
+      console.error('Fehler beim Abmelden:', error);
     }
   };
 

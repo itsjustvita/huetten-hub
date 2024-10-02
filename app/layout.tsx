@@ -1,10 +1,10 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
-import { AuthWrapper } from "@/components/AuthWrapper";
+import './globals.css';
+import { Inter } from 'next/font/google';
+const inter = Inter({ subsets: ['latin'] });
 
-const inter = Inter({ subsets: ["latin"] });
+// Definieren Sie einen Typ für den Benutzer
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -12,7 +12,9 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className={inter.className}>
-        <AuthWrapper>{children}</AuthWrapper>
+        <main>
+          <div className="w-full">{children}</div>
+        </main>
       </body>
     </html>
   );
