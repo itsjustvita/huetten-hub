@@ -24,7 +24,7 @@ export function Navigation({ user, onLogout }: NavigationProps) {
   const pathname = usePathname();
 
   const navItems = [
-    { name: "Kalender", path: "/dashboard" },
+    { name: "Kalender", path: "/calendar" },
     { name: "Buchungen", path: "/bookings" },
     ...(user.isAdmin
       ? [

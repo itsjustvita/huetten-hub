@@ -30,12 +30,14 @@ interface BookingModalProps {
   checkInDate: Date;
   onClose: () => void;
   userId: number; // Neu: ID des eingeloggten Benutzers
+  onBookingComplete: () => void; // Neue Prop
 }
 
 export function BookingModal({
   checkInDate,
   onClose,
   userId,
+  onBookingComplete,
 }: BookingModalProps) {
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
   const [bookingType, setBookingType] = useState<string>("");
@@ -77,6 +79,7 @@ export function BookingModal({
         title: "Erfolg",
         description: "Ihre Buchung wurde erfolgreich gespeichert.",
       });
+      onBookingComplete(); // Hier rufen wir die übergebene Funktion auf
       onClose();
     } catch (error) {
       console.error("Fehler beim Speichern der Buchung:", error);

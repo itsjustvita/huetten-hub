@@ -64,3 +64,26 @@ export async function POST(request: Request) {
     );
   }
 }
+
+// Fügen Sie diese Funktion zur bestehenden Datei hinzu
+
+export async function GET(request: Request) {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    const query = `
+      SELECT check_in_date, check_out_date, booking_type
+      FROM bookings
+      WHERE check_out_date >= CURDATE()
+    `;
+    const [rows] = await connection.execute(query);
+    await connection.end();
+
+    return NextResponse.json(rows);
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Buchungen:", error);
+    return NextResponse.json(
+      { error: "Interner Serverfehler", details: (error as Error).message },
+      { status: 500 }
+    );
+  }
+}

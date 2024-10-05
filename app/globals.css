@@ -76,3 +76,6 @@ body {
     @apply bg-background text-foreground;
   }
 }
+.glassmorphism {
+  @apply bg-green-950/40 backdrop-filter backdrop-blur-md border-b border-white/30;
+}
