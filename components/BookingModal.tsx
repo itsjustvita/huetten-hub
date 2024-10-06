@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { format } from "date-fns";
+import { format, addDays, startOfDay } from "date-fns";
 import { de } from "date-fns/locale";
 import {
   Dialog,
@@ -58,6 +58,7 @@ export function BookingModal({
     setIsLoading(true);
 
     try {
+      // Fügen Sie einen Tag zum checkOutDate hinzu
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: {
@@ -65,8 +66,8 @@ export function BookingModal({
         },
         body: JSON.stringify({
           userId,
-          checkInDate,
-          checkOutDate,
+          checkInDate: format(checkInDate, "yyyy-MM-dd"),
+          checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
           bookingType,
         }),
       });
@@ -79,7 +80,7 @@ export function BookingModal({
         title: "Erfolg",
         description: "Ihre Buchung wurde erfolgreich gespeichert.",
       });
-      onBookingComplete(); // Hier rufen wir die übergebene Funktion auf
+      onBookingComplete();
       onClose();
     } catch (error) {
       console.error("Fehler beim Speichern der Buchung:", error);
@@ -144,7 +145,7 @@ export function BookingModal({
                       mode="single"
                       selected={checkOutDate}
                       onSelect={setCheckOutDate}
-                      disabled={(date) => date <= checkInDate}
+                      disabled={(date) => date < startOfDay(checkInDate)}
                       initialFocus
                       locale={de}
                       weekStartsOn={1}
@@ -152,7 +153,12 @@ export function BookingModal({
                       classNames={{
                         head_cell:
                           "text-white text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
+                        nav_button: "text-white hover:bg-white/10",
+                        nav_button_previous: "absolute left-1",
+                        nav_button_next: "absolute right-1",
                       }}
+                      showOutsideDays={true}
+                      defaultMonth={checkInDate}
                     />
                   </div>
                 </PopoverContent>

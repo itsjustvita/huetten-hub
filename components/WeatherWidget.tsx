@@ -113,7 +113,7 @@ export const WeatherWidget = () => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-6 gap-4 mb-6">
         <div className="flex items-center">
           <div
             dangerouslySetInnerHTML={{
@@ -160,9 +160,9 @@ export const WeatherWidget = () => {
                 ),
               }}
             />
-            <p className="text-sm text-white flex gap-1 items-center justify-center mt-2">
+            <div className="text-sm text-white flex gap-1 items-center justify-center mt-2">
               <span className="flex items-center">
-                <div
+                <span
                   dangerouslySetInnerHTML={{
                     __html: featherIcons.icons["arrow-up"].toSvg({
                       width: 12,
@@ -174,7 +174,7 @@ export const WeatherWidget = () => {
                 {Math.round(weatherData.daily.temperature_2m_max[index + 1])}°
               </span>
               <span className="flex items-center">
-                <div
+                <span
                   dangerouslySetInnerHTML={{
                     __html: featherIcons.icons["arrow-down"].toSvg({
                       width: 12,
@@ -185,7 +185,7 @@ export const WeatherWidget = () => {
                 />
                 {Math.round(weatherData.daily.temperature_2m_min[index + 1])}°
               </span>
-            </p>
+            </div>
           </div>
         ))}
       </div>

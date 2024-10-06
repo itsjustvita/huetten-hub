@@ -51,25 +51,23 @@ export default function DashboardPage() {
   }
 
   return (
-    <>
-      <div className="w-full min-h-screen relative">
-        <NavigationWrapper
-          user={{
-            name: user.username,
-            isAdmin: user.isAdmin || false,
-          }}
-        />
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/1.jpg')" }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/40 to-slate-900/70"></div>
-        <div className="relative container mx-auto p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <WeatherWidget />
-          </div>
+    <div className="w-full min-h-screen relative">
+      <NavigationWrapper
+        user={{
+          name: user.username,
+          isAdmin: user.isAdmin || false,
+        }}
+      />
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/1.jpg')" }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/40 to-slate-900/70"></div>
+      <div className="relative container mx-auto p-4">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
+          <WeatherWidget />
         </div>
       </div>
-    </>
+    </div>
   );
 }

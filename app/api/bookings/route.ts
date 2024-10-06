@@ -69,18 +69,45 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    const connection = await mysql.createConnection(dbConfig);
-    const query = `
-      SELECT check_in_date, check_out_date, booking_type
-      FROM bookings
-      WHERE check_out_date >= CURDATE()
-    `;
-    const [rows] = await connection.execute(query);
-    await connection.end();
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
 
-    return NextResponse.json(rows);
+    const connection = await mysql.createConnection(dbConfig);
+
+    if (id) {
+      // Einzelne Buchung abrufen
+      const query = `
+        SELECT b.id, b.check_in_date, b.check_out_date, b.booking_type, u.username
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
+        WHERE b.id = ?
+      `;
+      const [rows] = await connection.execute<mysql.RowDataPacket[]>(query, [
+        id,
+      ]);
+      await connection.end();
+
+      if (rows.length === 0) {
+        return NextResponse.json(
+          { error: "Buchung nicht gefunden" },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json(rows[0]);
+    } else {
+      // Alle zukünftigen Buchungen abrufen
+      const query = `
+        SELECT b.id, b.check_in_date, b.check_out_date, b.booking_type, u.username
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
+      `;
+      const [rows] = await connection.execute(query);
+      await connection.end();
+
+      return NextResponse.json(rows);
+    }
   } catch (error) {
-    console.error("Fehler beim Abrufen der Buchungen:", error);
+    console.error("Fehler beim Abrufen der Buchung(en):", error);
     return NextResponse.json(
       { error: "Interner Serverfehler", details: (error as Error).message },
       { status: 500 }
